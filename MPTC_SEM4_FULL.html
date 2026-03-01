@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MPTC 4TH SEMESTER - MCQ SYSTEM</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+
+        header {
+            background: linear-gradient(to right, #3a5fd0, #8e2de2);
+            padding: 25px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .container { padding: 30px; }
+
+        .timer {
+            font-size: 24px;
+            color: #ffd700;
+            margin: 15px 0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        .submit-btn { background: #1fa84f; color: white; }
+        .back-btn { background: #2f6df6; color: white; }
+        .home-btn { background: #ff7a00; color: white; }
+        .unit-btn { background: #444; color: white; }
+
+        .question-box {
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .result-box {
+            background: rgba(0,255,0,0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .correct { color: lightgreen; }
+        .wrong { color: red; }
+    </style>
+</head>
+<body>
+
+<header>MPTC 4TH SEMESTER - MCQ SYSTEM</header>
+
+<div class="container" id="mainContent">
+    <h2>Select Subject</h2>
+    <button class="btn unit-btn" onclick="showDSUP()">DSUP</button>
+    <button class="btn unit-btn" onclick="showSE()">Software Engineering</button>
+</div>
+
+<script>
+
+let timerInterval;
+let timeLeft = 1500;
+let currentQuestions = [];
+let subject = "";
+let section = "";
+const dsupUnits = {
+
+"Unit 1": [
+{q:"The process of hiding implementation details and showing only operations is called:",options:["Encapsulation","Abstraction","Polymorphism","Inheritance"],answer:1},
+{q:"In Python, a list is an example of:",options:["Primitive data type","Non-primitive, linear data structure","Non-primitive, non-linear data structure","None of the above"],answer:1},
+{q:"Worst-case time complexity of searching in a stack:",options:["O(1)","O(log n)","O(n)","O(n^2)"],answer:2},
+{q:"Best definition of an ADT:",options:["Implementation exposed","A class in Python","Mathematical model with defined operations","Primitive type"],answer:2},
+{q:"Which is non-linear data structure?",options:["Queue","Array","Stack","Graph"],answer:3},
+{q:"Removes last element from Python list:",options:["remove()","delete()","pop()","cut()"],answer:2},
+{q:"Which is linear data structure?",options:["Graph","Linked List","Tree","Heap"],answer:1},
+{q:"Example of ADT:",options:["Integer","String","Stack","Boolean"],answer:2},
+{q:"Notation giving tight bound:",options:["Big-O","Big-Ω","Big-Θ","None"],answer:2},
+{q:"Non-primitive data structure:",options:["Float","Boolean","Array","Character"],answer:2},
+{q:"Upper bound notation of algorithm:",options:["Big-O","Big-Ω","Big-Θ","None"],answer:0},
+{q:"Enqueue in linked list queue takes:",options:["O(1)","O(log n)","O(n)","O(n log n)"],answer:0},
+{q:"Time complexity measures:",options:["Memory used","Input size","Running time wrt input size","None"],answer:2},
+{q:"Stacks and Queues are:",options:["Primitive","Linear","Non-linear","None"],answer:1},
+{q:"Space complexity refers to:",options:["Max size","Memory required","Comparisons","None"],answer:1},
+{q:"Primitive data structure:",options:["Stack","Queue","Integer","Tree"],answer:2},
+{q:"Not basic operation:",options:["Insertion","Deletion","Sorting","Traversal"],answer:2},
+{q:"Student record (roll,name,marks) is:",options:["ADT","Primitive","Constant","Operator"],answer:0},
+{q:"Which is not ADT?",options:["Stack","Queue","Linked List","Graph"],answer:2},
+{q:"Inorder & Preorder given tree, Postorder is:",options:["D E B F C A","D E B F A C","D E F C B A","D E B C F A"],answer:3}
+],
+
+"Unit 2": [
+{q:"Main advantage of singly linked list:",options:["Random access","Fixed size","Dynamic size & easy insertion/deletion","Faster search"],answer:2},
+{q:"Node in singly linked list contains:",options:["Only data","Data & two addresses","Data & one address","Multiple addresses"],answer:2},
+{q:"Linked list with no nodes:",options:["Null pointer","Void list","Zero list","Empty list"],answer:3},
+{q:"Circular linked list useful for:",options:["Queues","CPU scheduling","Continuous traversal","All"],answer:3},
+{q:"Search in singly linked list:",options:["Binary","Last only","Jump middle","Sequential"],answer:3},
+{q:"Disadvantage of doubly linked list:",options:["Extra memory","More traversal","Cannot store large data","No head"],answer:0},
+{q:"Each element is called:",options:["Block","Node","Record","Element"],answer:1},
+{q:"Removing node adjusts:",options:["Data only","Pointer links","Both","Memory size"],answer:1},
+{q:"Data part of node:",options:["Address","Pointer","Information field","Key"],answer:2},
+{q:"Next pointer called:",options:["Forward link","Backward link","Head","Tail"],answer:0},
+{q:"Traversal in circular LL can:",options:["Never end","End after cycle","Stop at NULL","End middle"],answer:0},
+{q:"Prepending means:",options:["Add end","Add beginning","Add middle","Remove"],answer:1},
+{q:"Easier in doubly LL:",options:["Traversal","Deletion","Searching","None"],answer:1},
+{q:"Memory location part:",options:["Information","Address field","Data","Null"],answer:1},
+{q:"Traversing means:",options:["Modify","Visit each","Search last","Delete each"],answer:1},
+{q:"Last node next in circular LL:",options:["NULL","Head","Middle","None"],answer:1},
+{q:"Last node pointer special value:",options:["NULL","Zero","-1","None"],answer:0},
+{q:"Circular LL can be:",options:["Singly","Doubly","Both","None"],answer:2},
+{q:"Circular LL useful when:",options:["Sequential","Memory unlimited","Only search","Repeated traversal"],answer:3},
+{q:"Doubly LL node contains:",options:["Data+2 pointers","Data+1 pointer","Only pointers","Two data"],answer:0}
+],
+
+"Unit 3": [
+{q:"NOT stack operation:",options:["Push","Pop","Enqueue","Display"],answer:2},
+{q:"Insertion end of queue:",options:["Front","Rear","Head","Top"],answer:1},
+{q:"Remove top of stack:",options:["Delete","Remove","pop","cut"],answer:2},
+{q:"Stack in Python uses:",options:["Tuple","Set","List","Dictionary"],answer:2},
+{q:"Stack pop method:",options:["remove()","discard()","pop()","delete()"],answer:2},
+{q:"Remove from queue:",options:["Dequeue","Delete","Remove","Pop"],answer:0},
+{q:"Postfix expression:",options:["(A+B)*C","AB+C*","+AB*C","A*B+C"],answer:1},
+{q:"Stack principle:",options:["FIFO","FILO","LIFO","Random"],answer:2},
+{q:"Factorial recursive:",options:["n*(n+1)!","n*(n-1)!","(n-1)*(n+1)!","n+(n-1)!"],answer:1},
+{q:"Stack empty pop:",options:["Underflow","Overflow","Error","Null"],answer:0},
+{q:"Recursion means:",options:["Calls itself","Calls other","Stops","Infinite"],answer:0},
+{q:"Deletion end of queue:",options:["Front","Rear","Head","Tail"],answer:0},
+{q:"Queue principle:",options:["FIFO","LIFO","FILO","Random"],answer:0},
+{q:"Add to stack:",options:["pop","push","peek","insert"],answer:1},
+{q:"Queue full:",options:["Overflow","Underflow","Deadlock","Stack overflow"],answer:0},
+{q:"Stack push in Python:",options:["append()","insert()","extend()","add()"],answer:0},
+{q:"Priority queue removes by:",options:["FIFO","LIFO","Priority","Random"],answer:2},
+{q:"Stacks used for:",options:["Balanced delimiters","Sorting","Searching","Merging"],answer:0},
+{q:"Add to queue:",options:["Add","Push","Enqueue","Insert"],answer:2},
+{q:"Circular queue rear end:",options:["Overflow","Reset to beginning","Front reset","Underflow"],answer:1}
+],
+
+"Unit 4": [
+{q:"Left child in BST contains:",options:["Greater","Smaller","Equal","Random"],answer:1},
+{q:"Binary tree max nodes height h:",options:["2^(h+1)-1","2^h-1","h^2","2h"],answer:0},
+{q:"Traversal left-root-right:",options:["Pre","Post","In","Level"],answer:2},
+{q:"Root visited first:",options:["In","Pre","Post","Level"],answer:1},
+{q:"Full binary tree:",options:["Complete","Full","Perfect","AVL"],answer:1},
+{q:"Depth defined as:",options:["Height","Depth","Level","Degree"],answer:1},
+{q:"Insertion in BST at:",options:["Root","Leaf","Middle","Random"],answer:1},
+{q:"BST inorder gives:",options:["Reverse","Sorted","Random","Level"],answer:1},
+{q:"Link between nodes:",options:["Edge","Path","Level","Height"],answer:0},
+{q:"Tree without cycle:",options:["Graph","Tree","Linked list","Queue"],answer:1},
+{q:"Nodes with no children:",options:["Root","Internal","Leaf","Parent"],answer:2},
+{q:"BST useful for:",options:["Sorting","Searching","Range queries","All"],answer:3},
+{q:"Nodes same parent:",options:["Siblings","Leaves","Children","Ancestors"],answer:0},
+{q:"Number of children:",options:["Level","Degree","Depth","Height"],answer:1},
+{q:"Topmost node:",options:["Parent","Leaf","Root","Sibling"],answer:2},
+{q:"Binary tree node contains:",options:["Data","Data+1 pointer","Data+2 pointers","Pointers"],answer:2},
+{q:"Max children in binary tree:",options:["1","2","3","Any"],answer:1},
+{q:"Level defined as:",options:["Edges+1","Height","Depth","Degree"],answer:0},
+{q:"Height of tree:",options:["Max depth","Min depth","Edges count","Nodes count"],answer:0},
+{q:"Preorder traversal order:",options:["Root-left-right","Left-root-right","Left-right-root","Level"],answer:0}
+],
+
+"Unit 5": [
+{q:"Linear search works on:",options:["Sorted","Unsorted","Both","Linked list only"],answer:2},
+{q:"Binary search works on:",options:["Sorted","Unsorted","Both","Linked list"],answer:0},
+{q:"Bubble sort passes:",options:["n-1","log n","n^2","1"],answer:0},
+{q:"Best case Selection sort:",options:["O(n)","O(n^2)","O(n log n)","O(log n)"],answer:1},
+{q:"Binary search first comparison (10 in sorted list):",options:["8","6","10","4"],answer:0},
+{q:"Bubble sort first pass result:",options:["[1,4,2,5,8]","[1,5,2,4,8]","[5,4,2,1,8]","[2,4,1,5,8]"],answer:0},
+{q:"Merge sort principle:",options:["Greedy","Divide & Conquer","DP","Brute"],answer:1},
+{q:"Binary search technique:",options:["Divide & Conquer","Brute","Greedy","DP"],answer:0},
+{q:"Quick sort worst case pivot:",options:["Median","Middle","Smallest/Largest","Random"],answer:2},
+{q:"Quick sort technique:",options:["DP","Divide & Conquer","Greedy","Brute"],answer:1},
+{q:"Guaranteed O(n log n):",options:["Quick","Merge","Bubble","Insertion"],answer:1},
+{q:"Selection sort first pass:",options:["[10,29,14,37,13]","[13,10,14,37,29]","[10,13,14,29,37]","[29,10,13,14,37]"],answer:0},
+{q:"Bubble compares:",options:["Non-adjacent","Adjacent","Random","Middle"],answer:1},
+{q:"After ith pass selection:",options:["First i sorted","Last i sorted","Fully sorted","None"],answer:0},
+{q:"Merge sort suitable for:",options:["Small","Large","Few elements","Linked only"],answer:1},
+{q:"Quick sort depends on:",options:["Pivot","Swaps","Memory","Randomness"],answer:0},
+{q:"Binary search comparisons for 7 in [1,3,5,7,9,11]:",options:["1","2","3","4"],answer:1},
+{q:"Linear search comparisons for 7 in [5,3,7,1,9]:",options:["1","2","3","4"],answer:2},
+{q:"Selection sort method:",options:["Swap adjacent","Find minimum","Divide","Merge"],answer:1},
+{q:"Bubble sort compares and swaps:",options:["Non-adjacent","Adjacent","Random","Middle"],answer:1}
+]
+
+};
+
+const seDOTE = {
+"Unit 1": [
+{q:"What is the term used for qualities like reliability, performance, and security in an SRS?",options:["Non-Functional Requirements","System Goals","Business Logic","Project Scope"],answer:0},
+{q:"The feature of software that allows it to run on different systems without modification is:",options:["Usability","Compatibility","Adaptability","Portability"],answer:3},
+{q:"Which SDLC model uses risk analysis at every phase?",options:["Waterfall Model","Spiral Model","Agile Model","Iterative Enhancement Model"],answer:1},
+{q:"The software development model that uses a working model of the software for feedback is known as:",options:["Prototyping Model","Waterfall Model","Spiral Model","Agile Model"],answer:0},
+{q:"Programs written for individual use without full documentation or maintenance plans are called:",options:["Software products","Software packages","System software","Standalone programs"],answer:3},
+{q:"The Waterfall model is best described as:",options:["A linear sequential flow of development","A model focusing on prototypes","A model based on feedback loops","A model that uses pair programming"],answer:0},
+{q:"A key characteristic of good software that allows it to be fixed or improved easily is called:",options:["Maintainability","Efficiency","Reliability","Portability"],answer:0},
+{q:"A software product has critical components that need to be developed first and tested individually before integrating them into the full system. Which model supports this approach?",options:["Spiral Model","Agile Model","Waterfall Model","Iterative Enhancement Model"],answer:3},
+{q:"Business goals are unclear. How can the team define SRS requirements?",options:["Use interviews and use cases","Start coding","Skip to testing","Let the client decide later"],answer:0},
+{q:"The process of developing, maintaining, and managing software systematically is called:",options:["Programming","Software Development","Software Engineering","Software Design"],answer:2},
+{q:"A customer wants email alerts for password changes. Where should this go in the SRS?",options:["Test Plan","Design Section","Functional Requirements","User Manual"],answer:2},
+{q:"A student wants to apply software engineering concepts to their final-year project. What is the first step?",options:["Start coding immediately","Search for code online","Design the logo first","Define software requirements and understand the problem clearly"],answer:3},
+{q:"What is the main purpose of an SRS in software development?",options:["To describe the hardware environment","To track coding errors","To maintain deployment records","To specify system requirements clearly and unambiguously"],answer:3},
+{q:"What characteristic of an SRS ensures that every requirement is clear and open to only one interpretation?",options:["Unambiguous","Flexible","Secure","Testable"],answer:0},
+{q:"Agile methodology emphasizes:",options:["Strict phase separation","Heavy documentation","Customer collaboration and quick delivery","One-time product delivery"],answer:2},
+{q:"What does consistency in an SRS ensure?",options:["No requirement conflicts with another","All designs are automated","No performance tests are required","Software includes AI features"],answer:0},
+{q:"Why is Software Engineering essential for large projects?",options:["Makes coding faster","Helps manage complexity and ensures quality","Increases hardware compatibility","Prevents internet errors"],answer:1},
+{q:"Why is traceability important in an SRS document?",options:["Links each requirement to its source, design, and test cases","Helps graphic design","Reduces memory usage","Defines programming structure"],answer:0},
+{q:"A startup launches a mobile app without documentation or support. It is classified as:",options:["Prototype","Software product","Program (missing documentation and support)","Software tool"],answer:2},
+{q:"How does the Iterative Enhancement model improve a system over time?",options:["Completes all requirements in one release","Enhances software in small repeated cycles","Eliminates testing","Focuses only on backend"],answer:1}
+],
+
+/* ================= UNIT 2 ================= */
+"Unit 2": [
+{q:"Why does unclear scope lead to poor estimation?",
+options:["It reduces the velocity of the project team","It increases the difficulty of accurately forecasting effort and time","It prevents the team from applying Agile metrics","It guarantees more automation in cost estimation"],answer:1},
+
+{q:"What is the main activity in sprint planning in Agile?",
+options:["Delivering the product to the customer","Retrospective of the previous sprint","Selecting and committing to a set of backlog items","Writing test cases"],answer:2},
+
+{q:"Function Point metrics are mainly used to measure:",
+options:["Code complexity","User functionality delivered","Number of bugs","Time taken for testing"],answer:1},
+
+{q:"You are asked to estimate the size of a new feature using Function Point Analysis. What is the first step?",
+options:["Count the number of lines of code","Identify external inputs, outputs, and files","Assign story points","Check past sprint performance"],answer:1},
+
+{q:"Coupling in software design refers to:",
+options:["The degree of dependency between modules","The size of each module","The speed of program execution","The testability of software"],answer:0},
+
+{q:"Burndown Chart in Agile is used to measure:",
+options:["Project defect density","Remaining work against time","Resource efficiency","Code reusability"],answer:1},
+
+{q:"Your team wants each module to focus on one task. What are you trying to apply?",
+options:["High coupling","Low cohesion","High cohesion","User testing"],answer:2},
+
+{q:"Which type of coupling is considered the strongest (least desirable)?",
+options:["Control coupling","Data coupling","Content coupling","Stamp coupling"],answer:2},
+
+{q:"The correct order of the software design process is:",
+options:["Testing — Coding — Design — Maintenance","Architectural design — Detailed design — Coding","Analysis — Deployment — Maintenance — Evolution","Planning — Implementation — Testing"],answer:1},
+
+{q:"In a mobile app, buttons and menus are placed clearly so users can move easily. What design is applied?",
+options:["Structure chart design","Interface design","Database design","Cohesion methods"],answer:1},
+
+{q:"In an Agile team, the velocity for the last 3 sprints was 20, 22, and 18 story points. What is a reasonable velocity to plan for the next sprint?",
+options:["15","18","20","25"],answer:2},
+
+{q:"Cohesion in software design refers to:",
+options:["The degree to which elements of a module belong together","The number of dependencies among modules","How efficient the algorithm is","The relationship between hardware and software"],answer:0},
+
+{q:"Which metric is most relevant in Agile development?",
+options:["Lines of code (LOC)","Velocity","CPU Utilization","Function Complexity Index"],answer:1},
+
+{q:"Two e-learning apps are tested: App A uses the same layout for all subjects. App B uses different layouts for each subject. Which app follows better design?",
+options:["App A, because it is consistent","App B, because it avoids repetition","App B, because it uses more colors","Both are equal"],answer:0},
+
+{q:"Which diagram is often used to represent modular design?",
+options:["Sequence diagram","Use case diagram","Structure chart","Gantt chart"],answer:2},
+
+{q:"Feature Point metrics are an extension of function points to include:",
+options:["Hardware specifications","Algorithmic complexity","Team size","Memory utilization"],answer:1},
+
+{q:"What does HCI stand for in software engineering?",
+options:["Hardware Communication Interface","Human-Centered Input","Human-Computer Interaction","High Control Instruction"],answer:2},
+
+{q:"What does COCOMO stand for?",
+options:["Constructive Cost Model","Computer Cost Model","Constructive Coding Model","Computerized Cost Management"],answer:0},
+
+{q:"Why are software metrics important in software planning?",
+options:["They help in measuring hardware performance","They allow quantitative evaluation of software quality and productivity","They eliminate the need for testing","They are only used to measure coding speed"],answer:1},
+
+{q:"The main goal of software design is:",
+options:["To finish coding quickly","To turn requirements into a clear, structured solution","To skip testing steps","To remove documentation work"],answer:1}
+],
+
+/* ================= UNIT 3 ================= */
+"Unit 3": [
+
+{q:"What is the definition of risk in software engineering?",options:["A guaranteed failure in the project","A potential problem that may or may not occur causing loss","A planned event for project enhancement","An error found during testing"],answer:1},
+{q:"The project is using a new, untested technology that could cause unforeseen issues later. What is the best risk strategy?",options:["Risk avoidance by choosing a more stable technology","Risk acceptance with no backup plan","Risk recovery after failure","Avoid documenting this risk"],answer:0},
+{q:"A project faces high maintenance effort due to tightly coupled modules causing ripple effects of changes. The best corrective approach is to:",options:["Redesign for lower coupling and higher cohesion","Perform only emergency patches","Add more features rapidly","Ignore the coupling issue"],answer:0},
+{q:"When is risk recovery necessary?",options:["After a risk event has negatively impacted the project","Before risk identification","During project initiation only","When risks are totally avoided"],answer:0},
+{q:"Which risk is caused by changes in government regulations affecting the software project?",options:["Technical risk","External risk","User risk","Operational risk"],answer:1},
+{q:"Who proposed the laws of software evolution?",options:["Barry Boehm","Manny Lehman","Frederick Brooks","Roger Pressman"],answer:1},
+{q:"How would you categorize the risk of sudden loss of a key developer during a project?",options:["Technical risk","Organizational risk","User risk","Environmental risk"],answer:1},
+{q:"The purpose of a configuration audit is to:",options:["Ensure changes are authorized and documented correctly","Prevent errors during coding","Generate automatic versions of user requirements","Replace documentation with release notes"],answer:0},
+{q:"Which category of maintenance involves improving the performance or maintainability of software without changing its functionality?",options:["Corrective maintenance","Adaptive maintenance","Perfective maintenance","Preventive maintenance"],answer:2},
+{q:"What is the primary goal of risk management in software projects?",options:["To eliminate all risks completely","To identify, assess, and control risks to minimize their impact","To delay project delivery","To increase project costs"],answer:1},
+{q:"Which factor affects the effort required for software maintenance?",options:["Software complexity","Team size only","User manual quality only","Programming language used only"],answer:0},
+{q:"The baseline in SCM refers to:",options:["The final product release","A frozen configuration of a software product for change control","A customer requirement document","Backup of previous versions"],answer:1},
+{q:"The software has been found to have multiple bugs after it has been released. Which maintenance type will you use to fix these issues?",options:["Corrective maintenance","Adaptive maintenance","Perfective maintenance","Preventive maintenance"],answer:0},
+{q:"Why are merge conflicts common in version control?",options:["Developers edit exactly the same sections of code","Only one developer can commit","History is not tracked","Repositories are always outdated"],answer:0},
+{q:"A planned software release includes a feature that might cause integration problems. Which approach reflects risk control?",options:["Develop and test the feature in isolation before integration","Release without testing to save time","Accept the risk and fix issues after release","Postpone all updates indefinitely"],answer:0},
+{q:"Which type of risk involves project delays due to poor scheduling?",options:["Technical risk","Project management risk","External risk","Legal risk"],answer:1},
+{q:"Which factor reduces software maintenance effort?",options:["Poor documentation","Modular design","High coupling","Obsolete tools"],answer:1},
+{q:"What differentiates risk avoidance from risk detection?",options:["Avoidance tries to eliminate risk causes; detection identifies risks and early signs","Avoidance ignores risks; detection ignores resolutions","Both mean the same in risk management","Detection happens only after risk occurrence"],answer:0},
+{q:"What does it mean for software to be considered an “evolving entity”?",options:["Software remains static after its initial release","Software continuously changes and improves over time","Software is only updated during major releases","Software is never updated after it is launched"],answer:1},
+{q:"To reduce dependency on a potentially unstable external API, a development team builds a local emulation. What risk strategy does this represent?",options:["Risk avoidance","Risk recovery","Risk transfer","Risk acceptance"],answer:0}
+
+],
+
+/* ================= UNIT 4 ================= */
+"Unit 4": [
+
+{q:"Which testing technique requires knowledge of internal logic of the application?",options:["Black box testing","White box testing","User acceptance testing","System testing"],answer:1},
+{q:"Which is the first phase in the Software Testing Life Cycle?",options:["Test Execution","Test Planning","Requirement Analysis","Defect Tracking"],answer:2},
+{q:"Tracking defects during testing helps to:",options:["Increase the number of software features","Identify, record, and manage software issues systematically","Write user manuals","Automate code generation"],answer:1},
+{q:"Which testing activity involves preparing detailed descriptions of test inputs, execution conditions, and expected results?",options:["Test execution","Defect tracking","Test planning","Test case design"],answer:3},
+{q:"In testing terminology, a fault is:",options:["The incorrect output observed by the user","A mistake in the software code or design","The condition that causes a failure","The final version of the software"],answer:1},
+{q:"Which activity involves setting up hardware and software conditions where testing will be performed?",options:["Test Planning","Test Execution","Testing Environment Setup","Defect Reporting"],answer:2},
+{q:"Boundary Value Analysis is a technique used in which testing strategy?",options:["White-box testing","Black-box testing","Unit testing","Regression testing"],answer:1},
+{q:"Functional testing primarily verifies:",options:["Performance of the software","Whether the software behaves as expected according to requirements","Security vulnerabilities","Usability and user interface"],answer:1},
+{q:"Which level of testing is best applied to verify the entire system’s compliance with requirements?",options:["Unit Testing","Integration Testing","System Testing","Regression Testing"],answer:2},
+{q:"What is the significance of defect severity in defect tracking?",options:["It indicates how fast the defect was found","It determines the priority for fixing the defect based on its impact","It measures the number of users affected","It defines the tester who reported the defect"],answer:1},
+{q:"What is the main objective of the Test Planning phase?",options:["To execute test cases","To define scope, objectives, resources, and schedule of testing","To fix defects found during testing","To design test cases"],answer:1},
+{q:"What is the main objective of software testing?",options:["To develop new software","To find defects in the software","To write code efficiently","To deploy software"],answer:1},
+{q:"Which term describes the deviation of the software from expected behaviour during execution?",options:["Error","Fault","Failure","Bug report"],answer:2},
+{q:"Comparing Functional and Non-Functional testing, which one checks how the system performs rather than what it does?",options:["Functional Testing","Non-Functional Testing","Unit Testing","Integration Testing"],answer:1},
+{q:"At which testing level would you apply smoke testing to validate a new build?",options:["Unit Testing","Integration Testing","System Testing","Sanity Testing"],answer:2},
+{q:"Black box testing primarily focuses on:",options:["Internal code structure","Program logic","Functionality without knowledge of code","Performance metrics"],answer:2},
+{q:"Which level of testing focuses on verifying the functionality of a specific module or component?",options:["System Testing","Unit Testing","Acceptance Testing","Integration Testing"],answer:1},
+{q:"What is a ‘fault’ in software testing?",options:["Incorrect output observed by the user","Human mistake during coding","Defect in the software code","Successful test execution"],answer:2},
+{q:"Which level of testing verifies the complete and integrated software system?",options:["Unit Testing","Integration Testing","System Testing","Acceptance Testing"],answer:2},
+{q:"Non-functional testing evaluates:",options:["The software’s features and functions","The software's performance, reliability, and usability","The number of test cases executed","Only the security aspects"],answer:1}
+
+],
+
+/* ================= UNIT 5 ================= */
+"Unit 5": [
+
+{q:"In software reliability, what is the purpose of reliability growth models?",options:["To add more features to the software","To estimate the cost of development","To predict and improve software reliability over time","To measure network bandwidth"],answer:2},
+{q:"What does the acronym MTTF stand for?",options:["Maximum Test Time Factor","Mean Time To Failure","Minimum Time To Finish","Model Testing Task Factor"],answer:1},
+{q:"The SEI CMM (Capability Maturity Model) consists of how many levels?",options:["THREE","FOUR","FIVE","SIX"],answer:2},
+{q:"What is the main reason to use ISO 9000 in software development?",options:["Manage projects better","Remove all bugs","Use repeatable steps to get good results","Speed up development by testing less"],answer:2},
+{q:"If the software has a constant failure rate over time, what type of failure pattern is most likely?",options:["Exponential","Normal","Poisson","Weibull"],answer:2},
+{q:"What is the primary benefit of ISO 9000 certification?",options:["Reduced software development costs","Improved software performance","Standardized quality assurance processes","Faster product release time"],answer:2},
+{q:"The ISO 9000 certification can help an organization by:",options:["Focusing solely on software quality testing","Implementing effective software design patterns","Ensuring adherence to quality management standards across processes","Ensuring that the software is defect-free"],answer:2},
+{q:"In the context of software quality, what is a ‘Quality Attribute’?",options:["A characteristic of the software development team","A feature of the software product that defines its performance, reliability, etc.","A process improvement model","A document that outlines the development methodology"],answer:1},
+{q:"A team wants their software to be safe and always work. What should they focus on?",options:["Efficiency and easy to fix","Features and user-friendliness","Speed and safety","Reliability and security"],answer:3},
+{q:"ISO 9126 is related to which area of software quality?",options:["Software cost estimation","Software quality characteristics and metrics","Software design patterns","Software project management"],answer:1},
+{q:"When should a company use the SEI CMM model?",options:["To find bugs","To improve how they build software step-by-step","To update software already released","To skip ISO certification"],answer:1},
+{q:"What is the primary purpose of classifying software failures?",options:["To determine user satisfaction","To decide project budget","To prioritize testing and debugging efforts","To increase hardware compatibility"],answer:2},
+{q:"In reliability growth modeling, what is primarily being tracked over time?",options:["Number of users adopting the software","Size of the software in lines of code","Number and rate of software failures","The number of developers in the team"],answer:2},
+{q:"What does MTBF stand for in software reliability metrics?",options:["Mean Time Between Failures","Maximum Time Before Failure","Most Trusted Bug Fix","Mean Time Before Fix"],answer:0},
+{q:"Which reliability metric measures the time between the occurrence of consecutive failures?",options:["MTTF","MTTR","MTBF","Failure Rate"],answer:2},
+{q:"What is the primary goal of software reliability?",options:["Increase performance","Reduce development time","Ensure the software performs without failure","Enhance user interface"],answer:2},
+{q:"The main purpose of verification in Software Quality Assurance (SQA) is to ensure that the software:",options:["Meets the user’s needs","Is free of defects","Is built according to the specified requirements","Functions correctly under real-world conditions"],answer:2},
+{q:"What is one limitation of ISO 9000 certification?",options:["It guarantees zero defects in the software","It focuses only on product features, not the process","It may not address all specific quality concerns of individual projects","It eliminates the need for other quality assurance methods"],answer:2},
+{q:"What does SQA stand for in the context of software development?",options:["Software Quality Assurance","Software Query Analysis","System Quality Assurance","Software Question Analysis"],answer:0},
+{q:"ISO 9000 certification primarily focuses on which aspect of software development?",options:["Hardware optimization","Process management and quality control","User interface design","Algorithm complexity"],answer:1}
+
+]
+};
+
+const seOWN = {
+"Unit 1": [
+{q:"Which activity belongs to the requirement process?", options:["Coding","Elicitation and analysis","System testing","Deployment"], answer:1},
+{q:"Which SDLC model is risk-driven and uses prototypes?", options:["Waterfall","Spiral","Agile","Object-Oriented"], answer:1},
+{q:"Object-Oriented model emphasizes:", options:["Encapsulation, inheritance, polymorphism","Only procedures","Linear decomposition","Ignoring reusability"], answer:0},
+{q:"Which is NOT a component of an SRS?", options:["Functional requirements","Performance requirements","User interface description","Coding style"], answer:3},
+{q:"Which of the following is a software myth?", options:["Adding people delays project","Maintenance costs more","Work is done once program runs","Requirements may change"], answer:2},
+{q:"Which is NOT an Agile principle?", options:["Customer satisfaction","Working software as progress","Accept changing requirements","Deliver only at project end"], answer:3},
+{q:"Which SDLC model is suitable when requirements are well understood?", options:["Spiral","Agile","Waterfall","Object-Oriented"], answer:2},
+{q:"The basis of Object-Oriented model is:", options:["Class","Method","Parameter","Object"], answer:3},
+{q:"Which activity is NOT part of software processes?", options:["Validation","Specification","Development","Dependence"], answer:3},
+{q:"The traditional SDLC model is:", options:["Agile","Waterfall","Spiral","Iterative"], answer:1},
+{q:"A desirable characteristic of a good SRS is:", options:["Ambiguous","Incomplete","Verifiable","Contradictory"], answer:2},
+{q:"Which is NOT involved in developing an SRS?", options:["Writing source code","Documenting requirements","Feasibility analysis","Requirement elicitation"], answer:0},
+{q:"Spiral model mainly focuses on:", options:["UI","Sequential flow","Documentation","Risk management"], answer:3},
+{q:"The primary purpose of SRS is to:", options:["Reduce cost by clarifying requirements","Skip design","Avoid feedback","Eliminate testing"], answer:0},
+{q:"Difference between program and software product is:", options:["Size","Testing","Documentation and support","User interface"], answer:2},
+{q:"Iterative Enhancement model aims to:", options:["Deliver full system once","Refine through cycles","Skip testing","Only document"], answer:1},
+{q:"A good SRS should be:", options:["Ambiguous","Rigid","Clear, consistent, verifiable","General"], answer:2},
+{q:"Which is NOT a characteristic of software?", options:["Manufactured","Does not wear out","Custom built","Engineered"], answer:0},
+{q:"SRS stands for:", options:["Software Requirement Specification","Software Reset Specification","Software Requirement Supply","Software Reset Supply"], answer:0},
+{q:"Which requirement type defines system behaviour?", options:["Non-functional","Functional","Business","Performance"], answer:1}
+],
+
+"Unit 2": [
+{q:"Weakest type of coupling is:", options:["Control","Stamp","Content","Data"], answer:3},
+{q:"Coupling metric represents:", options:["Cohesiveness","Independence","Connectedness","Disconnections"], answer:1},
+{q:"First step in software design process is:", options:["Code generation","Architectural design","Testing","Documentation"], answer:1},
+{q:"Main advantage of Function Point Analysis:", options:["Language dependent","No analyst effort","Ignores data files","Technology independent"], answer:3},
+{q:"Best type of cohesion is:", options:["Logical","Sequential","Functional","Temporal"], answer:2},
+{q:"Project size estimation depends on:", options:["Cost","Time","Schedule","Function points"], answer:3},
+{q:"Functions in C language are examples of:", options:["Modules","Design","Metrics","Estimation"], answer:0},
+{q:"Function Point Analysis is used to:", options:["Measure hardware capacity","Evaluate network performance","Count loops","Estimate size based on user functions"], answer:3},
+{q:"Modular design aims to:", options:["Divide system into manageable parts","Avoid abstraction","Reduce reuse","Increase dependencies"], answer:0},
+{q:"Poor estimation is mainly due to:", options:["Lack of historical data & changing requirements","Using many models","Incremental planning","Parametric models"], answer:0},
+{q:"Diagram showing data flow and processes is:", options:["Flowchart","ER diagram","Data Flow Diagram","Use case diagram"], answer:2},
+{q:"Structure chart represents:", options:["Hierarchical decomposition of modules","Hardware layout","Code indentation","Test cases"], answer:0},
+{q:"Software design primarily focuses on:", options:["Coding","Converting requirements into blueprint","Testing errors","Writing manuals"], answer:1},
+{q:"NOT a type of coupling is:", options:["Module coupling","Data coupling","Control flow coupling","Path coupling"], answer:3},
+{q:"Algorithmic estimation model is:", options:["COCOMO","Delphi","Expert judgment","Wideband consensus"], answer:0},
+{q:"NOT a principle of software metrics:", options:["Mathematical properties","Value increases with positive traits","Metrics must be validated","Value increases with negative traits"], answer:3},
+{q:"Important HCI design consideration:", options:["Technical prompts","Consistent screens","No feedback","Minimal messages"], answer:1},
+{q:"Good modular design requires:", options:["High dependency","High cohesion & low coupling","High coupling","Low cohesion"], answer:1},
+{q:"NOT a step-in project estimation:", options:["Sizing problem","Costing hardware","Effort & schedule estimation","Validation using past data"], answer:1},
+{q:"Design principle that improves understandability:", options:["High coupling","Low cohesion","Modularization","Code duplication"], answer:2}
+],
+
+"Unit 3": [
+{q:"Which does NOT affect maintenance effort?", options:["Program complexity","Design quality","Programming language","User typing speed"], answer:3},
+{q:"Risk control includes:", options:["Implementing response plans","Auditing configuration items","Adding requirements","New development only"], answer:0},
+{q:"Preventive maintenance means:", options:["Enhancing performance or reliability","Making software defect-free","Adapting environment","Avoiding risks"], answer:0},
+{q:"Code restructuring for readability is:", options:["Corrective","Adaptive","Perfective","Preventive"], answer:3},
+{q:"Main purpose of version control is to:", options:["Improve performance","Manage changes and track versions","Avoid documentation","Performance testing"], answer:1},
+{q:"Organizational risk includes:", options:["Algorithm errors","Optimization issues","Staff reshuffling","Hardware shortage"], answer:2},
+{q:"First step in risk management is:", options:["Risk monitoring","Risk control","Risk identification","Risk recovery"], answer:2},
+{q:"Identifying and controlling software changes is called:", options:["Risk recovery","Software Configuration Management","Maintenance management","Risk management"], answer:1},
+{q:"Example of project risk is:", options:["Poor cost estimation","Hardware degradation","Poor coding","Network failure"], answer:0},
+{q:"Maintenance cost is usually:", options:["Negligible","More than half of lifecycle cost","Hardware-related only","Only debugging"], answer:1},
+{q:"Risk avoidance strategy means:", options:["Ignoring risk","Waiting for failure","Sharing loss","Removing cause of risk"], answer:3},
+{q:"Risk related to schedule and cost overrun is:", options:["Technical","Business","Project","Operational"], answer:2},
+{q:"NOT a source of software risk:", options:["Requirement changes","Poor communication","User training","Sunshine duration"], answer:3},
+{q:"Corrective maintenance refers to:", options:["Platform adaptation","Performance improvement","Fixing defects after delivery","Adding features"], answer:2},
+{q:"Software aging refers to:", options:["Increase in complexity over time","Hardware wear","License expiry","Risk increase"], answer:0},
+{q:"Example of business risk is:", options:["Staff leaving","Customer rejection","Compiler issue","Algorithm fault"], answer:1},
+{q:"A risk is:", options:["Uncertain event impacting objectives","Guaranteed event","Fixed cost","Always technical"], answer:0},
+{q:"Technical risks often include:", options:["Staff turnover","New technology issues","Schedule delays","Budget cuts"], answer:1},
+{q:"Requirement changes after development start is:", options:["Technical risk","Requirement risk","Operational risk","Version risk"], answer:1},
+{q:"Preventive maintenance aims to:", options:["Avoid future failures","Fix current bugs","Add features","Adapt environment"], answer:0}
+],
+
+"Unit 4": [
+{q:"Control Flow Graph is used in:", options:["White box testing","Black box testing","Integration testing","Load testing"], answer:0},
+{q:"Black box testing is also known as:", options:["Structural testing","Clear-box testing","Glass-box testing","Behavioral testing"], answer:3},
+{q:"An advantage of black box testing is:", options:["Requires programming knowledge","Early SDLC execution","Tester independence from code","100% path coverage"], answer:2},
+{q:"Which is NOT part of a good test case?", options:["Expected output","Test environment","Source code","Preconditions"], answer:2},
+{q:"Debugging is:", options:["Finding and fixing errors","Same as testing","Test case design","User acceptance"], answer:0},
+{q:"Disadvantage of white box testing is:", options:["Limited coverage","Requires coding knowledge","Poor logical testing","GUI focus"], answer:1},
+{q:"Technique used to test combinations of conditions:", options:["Decision table testing","Error guessing","Basis path testing","State transition"], answer:0},
+{q:"Document containing steps, input, and expected output is:", options:["Test log","Test report","Test plan","Test case"], answer:3},
+{q:"Code walkthrough is:", options:["Informal code review","Debugging","Load testing","Regression testing"], answer:0},
+{q:"Test management tools help to:", options:["Automate coding","Find design errors","Replace reviews","Track execution and defects"], answer:3},
+{q:"NOT an objective of testing is:", options:["Finding defects","Increasing reliability","Ensuring zero defects always","Building confidence"], answer:2},
+{q:"NOT a black box testing technique:", options:["Decision table","Boundary value","Statement coverage","Cause-effect graph"], answer:2},
+{q:"“Testing shows presence of defects, not absence” is a:", options:["Testing principle","Debugging rule","Testing level","Testing strategy"], answer:0},
+{q:"Alpha testing is done:", options:["At customer site","By developers at their site","By testers only","After release"], answer:1},
+{q:"Integration testing ensures:", options:["Individual modules work","Components interact correctly","System meets user needs","Errors are fixed"], answer:1},
+{q:"Which testing focuses on internal program paths?", options:["Black box","Acceptance","White box","System"], answer:2},
+{q:"Regression testing is done to:", options:["Test new features only","Ensure changes didn’t affect existing functionality","Improve performance","Test UI only"], answer:1},
+{q:"Test execution phase involves:", options:["Writing test cases","Running test cases and logging defects","Defining scope","Environment setup"], answer:1},
+{q:"Severity of a defect depends on:", options:["Tester experience","Impact on system functionality","Time of detection","Number of test cases"], answer:1},
+{q:"Which testing ensures readiness for customer delivery?", options:["Unit","Integration","System","Acceptance"], answer:3}
+],
+
+"Unit 5": [
+{q:"ISO 9000 certification is concerned with:", options:["Testing methods","Quality management system","Cost models","Coding style"], answer:1},
+{q:"Main benefit of ISO 9000 is:", options:["Faster coding","Smaller teams","Customer confidence","Less documentation"], answer:2},
+{q:"“Are we building the product right?” refers to:", options:["Verification","Validation","Testing","Inspection"], answer:0},
+{q:"Which is NOT a goal of SQA?", options:["Requirement quality","Code quality","Design quality","Assurance quality"], answer:3},
+{q:"Availability of a system is calculated using:", options:["MTBF / (MTBF + MTTR)","MTTR / MTBF","MTTF × MTTR","Failure rate"], answer:0},
+{q:"Checking whether software meets user expectations is called:", options:["Validation","Certification","Reliability analysis","Debugging"], answer:0},
+{q:"Reliability metric combining MTTF and MTTR is:", options:["Failure density","Availability","Error rate","Reliability index"], answer:1},
+{q:"Failure intensity is measured as:", options:["Failures per unit time","MTBF","Availability","Error ratio"], answer:0},
+{q:"Reliability growth modelling is a:", options:["Requirement tool","Manual testing method","Design technique","Mathematical prediction technique"], answer:3},
+{q:"A limitation of ISO 9000 is:", options:["Improves confidence","High cost and paperwork","Increases productivity","Better documentation"], answer:1},
+{q:"Metric for mean operational time to failure is:", options:["MTTR","Availability","FIT","MTTF"], answer:3},
+{q:"Software quality is important because it:", options:["Reduces rework and cost","Slows delivery","Increases coding only","Removes requirements"], answer:0},
+{q:"Software quality means:", options:["No defects","Low cost","More features","Meeting requirements and user needs"], answer:3},
+{q:"SQA activity that checks compliance with standards is:", options:["Reviews","Testing","Audits","Validation"], answer:2},
+{q:"Time between successive failures is called:", options:["MTBF","MTTF","FIT","MTTR"], answer:0},
+{q:"Failure rate is defined as:", options:["MTTR × MTTF","MTBF + MTTR","1 − MTTF","1 / MTBF"], answer:3},
+{q:"Activity ensuring software is built as specified:", options:["Validation","Verification","Maintenance","Reliability"], answer:1},
+{q:"Alpha testing is done:", options:["At customer site","By developers at their site","After release","By users only"], answer:1},
+{q:"Integration testing ensures:", options:["Individual modules work","Components interact correctly","System meets needs","Errors are fixed"], answer:1},
+{q:"CMM Level-5 is known as:", options:["Initial","Managed","Defined","Optimizing"], answer:3}
+]
+};
+
+
+/* ===== NAVIGATION FUNCTIONS ===== */
+
+function showDSUP() {
+    subject = "DSUP";
+    let html = "<h2>Select DSUP Unit</h2>";
+    for (let unit in dsupUnits) {
+        html += `<button class="btn unit-btn" onclick="startQuiz('DSUP','${unit}')">${unit}</button>`;
+    }
+    html += `<br><button class="btn home-btn" onclick="goHome()">🏠 Home</button>`;
+    document.getElementById("mainContent").innerHTML = html;
+}
+
+function showSE() {
+    subject = "SE";
+    let html = `
+        <h2>Select Section</h2>
+        <button class="btn unit-btn" onclick="showSEUnits('DOTE')">DOTE</button>
+        <button class="btn unit-btn" onclick="showSEUnits('OWN')">OWN</button>
+        <br><button class="btn home-btn" onclick="goHome()">🏠 Home</button>
+    `;
+    document.getElementById("mainContent").innerHTML = html;
+}
+
+function showSEUnits(sec) {
+    section = sec;
+    let units = sec === "DOTE" ? seDOTE : seOWN;
+    let html = `<h2>Select ${sec} Unit</h2>`;
+    for (let unit in units) {
+        html += `<button class="btn unit-btn" onclick="startQuiz('${sec}','${unit}')">${unit}</button>`;
+    }
+    html += `<br><button class="btn back-btn" onclick="showSE()">Back</button>`;
+    document.getElementById("mainContent").innerHTML = html;
+}
+
+/* ================= QUIZ START ================= */
+
+function startQuiz(type, unit) {
+
+    timeLeft = 1500;
+
+    if(type === "DSUP") currentQuestions = dsupUnits[unit];
+    else if(type === "DOTE") currentQuestions = seDOTE[unit];
+    else currentQuestions = seOWN[unit];
+
+    let html = `
+        <h2>${unit}</h2>
+        <div class="timer">⏳ Time Left: <span id="time">${formatTime(timeLeft)}</span></div>
+        <div class="question-box">
+    `;
+
+    currentQuestions.forEach((item, index) => {
+        html += `<p><b>${index+1}. ${item.q}</b></p>`;
+        item.options.forEach((opt, i) => {
+            html += `
+                <label>
+                    <input type="radio" name="q${index}" value="${i}">
+                    ${opt}
+                </label><br>
+            `;
+        });
+    });
+
+    html += `
+        </div>
+        <br>
+        <button class="btn submit-btn" onclick="submitQuiz()">Submit</button>
+        <br>
+        <button class="btn back-btn" onclick="goBack()">Back</button>
+        <button class="btn home-btn" onclick="goHome()">🏠 Home</button>
+    `;
+
+    document.getElementById("mainContent").innerHTML = html;
+    startTimer();
+}
+
+/* ================= TIMER ================= */
+
+function startTimer() {
+    timerInterval = setInterval(function(){
+        timeLeft--;
+        document.getElementById("time").innerText = formatTime(timeLeft);
+        if(timeLeft <= 0){
+            clearInterval(timerInterval);
+            submitQuiz();
+        }
+    },1000);
+}
+
+function formatTime(seconds) {
+    let m = Math.floor(seconds/60);
+    let s = seconds%60;
+    return `${m}:${s<10?"0"+s:s}`;
+}
+
+/* ================= SUBMIT ================= */
+
+function submitQuiz() {
+
+    clearInterval(timerInterval);
+    let score = 0;
+    let resultHTML = "<h2>Result</h2><div class='result-box'>";
+
+    currentQuestions.forEach((item,index)=>{
+        let selected = document.querySelector(`input[name="q${index}"]:checked`);
+        let correctAnswer = item.answer;
+        let userAnswer = selected ? parseInt(selected.value) : null;
+
+        resultHTML += `<p><b>${index+1}. ${item.q}</b></p>`;
+
+        item.options.forEach((opt,i)=>{
+            if(i === correctAnswer){
+                resultHTML += `<p class="correct">✔ ${opt} (Correct)</p>`;
+            }
+            else if(i === userAnswer){
+                resultHTML += `<p class="wrong">✘ ${opt} (Your Answer)</p>`;
+            }
+        });
+
+        if(userAnswer === correctAnswer) score++;
+        resultHTML += "<hr>";
+    });
+
+    let percentage = ((score/currentQuestions.length)*100).toFixed(2);
+
+    resultHTML += `<h3>Score: ${score} / ${currentQuestions.length}</h3>`;
+    resultHTML += `<h3>Percentage: ${percentage}%</h3>`;
+    resultHTML += percentage >= 50 
+        ? `<h3 class="correct">PASS 🎉</h3>` 
+        : `<h3 class="wrong">FAIL ❌</h3>`;
+
+    resultHTML += "</div>";
+    resultHTML += `<button class="btn home-btn" onclick="goHome()">🏠 Home</button>`;
+
+    document.getElementById("mainContent").innerHTML = resultHTML;
+}
+
+/* ================= BACK & HOME ================= */
+
+function goHome(){
+    clearInterval(timerInterval);
+    location.reload();
+}
+
+function goBack(){
+    clearInterval(timerInterval);
+    if(subject === "DSUP") showDSUP();
+    else showSEUnits(section);
+}
+
+</script>
+
+</body>
+</html>
